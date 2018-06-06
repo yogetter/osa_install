@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ubuntu_install() {
+    echo "ubuntu"
+    apt-get update
+    apt-get dist-upgrade
+    apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan python
+    echo 'bonding' >> /etc/modules
+    echo '8021q' >> /etc/modules
+}
+centos_install() {
+    echo "centos install"
+    yum upgrade
+    yum install https://rdoproject.org/repos/openstack-queens/rdo-release-queens.rpm
+    yum install git ntp ntpdate openssh-server python-devel sudo '@Development Tools'
+
+}
+
+$1_install

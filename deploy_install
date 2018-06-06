@@ -1,0 +1,22 @@
+#!/bin/bash
+
+ubuntu_install() {
+    echo "ubuntu"
+    apt-get update
+    apt-get dist-upgrade
+    apt-get install aptitude build-essential git ntp ntpdate openssh-server python-dev sudo
+}
+centos_install() {
+    echo "centos install"
+    yum upgrade
+    yum install https://rdoproject.org/repos/openstack-queens/rdo-release-queens.rpm
+    yum install git ntp ntpdate openssh-server python-devel sudo '@Development Tools'
+
+}
+
+$1_install
+git https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible
+/opt/openstack-ansible/scripts/bootstrap-ansible.sh
+cp -r /opt/openstack-ansible/etc/openstack_deploy /etc/
+/opt/openstack-ansible/scripts/pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+
